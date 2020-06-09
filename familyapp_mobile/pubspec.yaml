@@ -38,8 +38,10 @@ dev_dependencies:
 
 # The following section is specific to Flutter.
 flutter:
+  #assets:
+  #  - assets/fonts
   fonts:
     - family: Roboto
       fonts:
-        - asset: fonts/Roboto/Roboto-Black.ttf
+        - asset: assets/fonts/Roboto-Black.ttf
   uses-material-design: true

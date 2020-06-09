@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
+import 'package:familyappmobile/components/createTask.dart';
+import 'package:familyappmobile/components/listviewElement.dart';
 
 void main() => runApp(App());
 
@@ -23,105 +25,103 @@ class HomeStatefulWidget extends StatefulWidget {
 
 
 class _HomeStatefulWidgetState extends State<HomeStatefulWidget> {
+  //variables
   String name = "Демьян";
+
+  //default strings
+  List<String> strings = [
+    "Проверь, есть ли новые задачи для тебя!",
+    "Задачи"
+  ];
+
+  //default colors
+  Map<String, Color> colors = {
+    'blue': Colors.blue[900],
+    'white': Colors.white
+  };
+
+  //building an app
   @override 
   Widget build(BuildContext context) {
-    return Scaffold(
-      backgroundColor: Colors.blue[900],
-      body: ListView(
-        children: <Widget>[
-          Padding(
-            padding: EdgeInsets.only(top: 30.0),
-            child: Column(
-      
-              children: <Widget>[
-                Text(
-                  "Привет, $name!",
-                  textAlign: TextAlign.center,
-                  style: TextStyle(
-                    color: Colors.white,
-                    fontSize: 36.0,
-                    fontWeight: FontWeight.bold
+    return MaterialApp(
+      home: Scaffold(
+        backgroundColor: Colors.blue[900],
+        body: ListView(
+          children: <Widget>[
+            Padding(
+              padding: EdgeInsets.only(top: 30.0),
+              child: Column(
+                children: <Widget>[
+                  Text(
+                    "Привет, $name!",
+                    textAlign: TextAlign.center,
+                    style: TextStyle(
+                      color: colors['white'],
+                      fontSize: 36.0,
+                      fontWeight: FontWeight.bold
+                      ),
+                    ),
+                  SizedBox(height: 30.0),
+                  Text(
+                    strings[0],
+                    textAlign: TextAlign.center,
+                    style: TextStyle(
+                      fontSize: 28.0,
+                      color: colors['white'],
+                      fontFamily: 'Roboto',
+                    ),
+                  )
+                ],
+              )
+            ),
+            SizedBox(height: 40.0),
+            Container(
+              height: MediaQuery.of(context).size.height - 185.0,
+              decoration: BoxDecoration(
+                color: colors['white'],
+                borderRadius: BorderRadius.only(topLeft: Radius.circular(75.0))
+              ),
+              child: Column(
+                children: <Widget>[
+                  SizedBox(height: 20.0),
+                  Text(
+                    strings[1],
+                      style: TextStyle(
+                      fontSize: 36.0,
+                      color: colors['blue'],
+                      fontFamily: 'Roboto',
+                      fontWeight: FontWeight.normal,
                     ),
                   ),
-                SizedBox(height: 30.0),
-                Text(
-                  "Проверь, есть ли новые задачи для тебя!",
-                  textAlign: TextAlign.center,
-                  style: TextStyle(
-                    fontSize: 28.0,
-                    color: Colors.white,
-                    fontFamily: 'Roboto',
+                  SizedBox(height: 40.0),
+                  Container(
+                    height: 200.0,
+                    child: ListView(
+                      scrollDirection: Axis.horizontal,
+                      children: <Widget>[
+                        TaskCard(task_author: 1, task_description: "Abc", task_deadline: DateTime.now(), task_title: "Abc",),
+                        TaskCard(task_author: 1, task_description: "Abc", task_deadline: DateTime.now(), task_title: "Abc",),
+                        TaskCard(task_author: 1, task_description: "Abc", task_deadline: DateTime.now(), task_title: "Abc",),
+                        TaskCard(task_author: 1, task_description: "Abc", task_deadline: DateTime.now(), task_title: "Abc",)
+
+                      ],
+                    )
                   ),
-                )
-              ],
+                ],
+              ),
             )
-          ),
-          SizedBox(height: 40.0),
-          Container(
-            height: MediaQuery.of(context).size.height - 185.0,
-            decoration: BoxDecoration(
-              color: Colors.white,
-              borderRadius: BorderRadius.only(topLeft: Radius.circular(75.0))
-            ),
-            child: Column(
-              children: <Widget>[
-                SizedBox(height: 20.0),
-                Text(
-                  "Задачи",
-                    style: TextStyle(
-                    fontSize: 36.0,
-                    color: Colors.blue[900],
-                    fontFamily: 'Roboto',
-                    fontWeight: FontWeight.bold
-                  ),
-                ),
-                SizedBox(height: 40.0),
-                Container(
-                  height: 200.0,
-                  child: ListView(
-                    scrollDirection: Axis.horizontal,
-                    children: <Widget>[
-                      Container(
-                        margin: EdgeInsets.only(left: 40.0),
-                        width: 150.0,
-                        height: 190.0,
-                        decoration: BoxDecoration(
-                          color: Colors.blue[900],
-                          borderRadius: BorderRadius.all(Radius.circular(20.0))
-                        ),
-                      ),
-                      Container(
-                        margin: EdgeInsets.only(left: 40.0),
-                        width: 150.0,
-                        height: 190.0,
-                        decoration: BoxDecoration(
-                          color: Colors.blue[900],
-                          borderRadius: BorderRadius.all(Radius.circular(20.0))
-                        ),
-                      ),
-                      Container(
-                        margin: EdgeInsets.only(left: 40.0),
-                        width: 150.0,
-                        height: 190.0,
-                        decoration: BoxDecoration(
-                          color: Colors.blue[900],
-                          borderRadius: BorderRadius.all(Radius.circular(20.0))
-                        ),
-                      )
-                    ],
-                  )
-                ),
-              ],
-            ),
-          )
-        ],
-      ),
-      floatingActionButton: FloatingActionButton(
-        onPressed: (){},
-        child: Icon(Icons.add),
-        backgroundColor: Colors.blue[900],
-      ),
+          ],
+        ),
+        floatingActionButton: FloatingActionButton(
+          onPressed: (){
+            return Navigator.of(context).push(
+              new MaterialPageRoute(builder: (context) => TaskCreateForm())
+            );
+          },
+          child: Icon(Icons.add),
+          backgroundColor: colors['blue'],
+        ),
+      )
     );
   }
 }
