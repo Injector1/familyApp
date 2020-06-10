@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-
+import 'package:familyappmobile/components/taskDetails.dart';
 
 class TaskCard extends StatelessWidget {
   final String task_title, task_description;
@@ -11,7 +11,11 @@ class TaskCard extends StatelessWidget {
   @override 
   Widget build(BuildContext context) {
     return InkWell(
-      onTap: (){},
+      onTap: (){
+        Navigator.of(context).push(
+          MaterialPageRoute(builder: (context) => TaskDetails())
+        );
+      },
       child: Container(
         width: 200.0,
         child: Container(

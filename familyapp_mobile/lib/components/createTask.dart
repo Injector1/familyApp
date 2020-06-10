@@ -68,7 +68,7 @@ class TaskCreateFormState extends State<TaskCreateForm> {
             padding: EdgeInsets.only(top: 40.0, left: 10.0, right: 10.0),
             child: ListView(
               children: <Widget>[
-                Text("Создать задачу", style: TextStyle(color: Colors.blue[900], fontSize: 36.0)),
+                Text("Создать задачу", style: TextStyle(color: Colors.blue[900], fontSize: 36.0, fontWeight: FontWeight.bold, fontFamily: 'Roboto-Bold')),
                 SizedBox(height: 20.0),
                 TextFormField(
                   decoration: InputDecoration(
@@ -100,7 +100,7 @@ class TaskCreateFormState extends State<TaskCreateForm> {
                   onPressed: (){_selectDate(context);},
                 ),
                 SizedBox(height: 20.0),
-                Text(strings[3], style: TextStyle(fontFamily: 'Roboto', color: Colors.blue[900])),
+                Text(strings[3], style: TextStyle(fontFamily: 'Roboto-Bold', color: Colors.blue[900], fontWeight: FontWeight.bold)),
                 RadioListTile(
                   title: Text("Максим", style: TextStyle(fontFamily: 'Roboto', color: Colors.blue[900])),
                   value: FamilyList.maksim,

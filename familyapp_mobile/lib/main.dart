@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 import 'package:familyappmobile/components/createTask.dart';
 import 'package:familyappmobile/components/listviewElement.dart';
+import 'package:familyappmobile/components/tasksListView.dart';
 
 void main() => runApp(App());
 
@@ -58,7 +59,8 @@ class _HomeStatefulWidgetState extends State<HomeStatefulWidget> {
                     style: TextStyle(
                       color: colors['white'],
                       fontSize: 36.0,
-                      fontWeight: FontWeight.bold
+                      fontWeight: FontWeight.bold,
+                      fontFamily: 'Roboto-Bold',
                       ),
                     ),
                   SizedBox(height: 30.0),
@@ -68,7 +70,8 @@ class _HomeStatefulWidgetState extends State<HomeStatefulWidget> {
                     style: TextStyle(
                       fontSize: 28.0,
                       color: colors['white'],
-                      fontFamily: 'Roboto',
+                      fontFamily: 'Roboto-Bold',
+                      fontWeight: FontWeight.bold,
                     ),
                   )
                 ],
@@ -76,7 +79,7 @@ class _HomeStatefulWidgetState extends State<HomeStatefulWidget> {
             ),
             SizedBox(height: 40.0),
             Container(
-              height: MediaQuery.of(context).size.height - 185.0,
+              //height: MediaQuery.of(context).size.height - 185.0,
               decoration: BoxDecoration(
                 color: colors['white'],
                 borderRadius: BorderRadius.only(topLeft: Radius.circular(75.0))
@@ -86,27 +89,38 @@ class _HomeStatefulWidgetState extends State<HomeStatefulWidget> {
                   SizedBox(height: 20.0),
                   Text(
                     strings[1],
-                      style: TextStyle(
+                    style: TextStyle(
                       fontSize: 36.0,
                       color: colors['blue'],
-                      fontFamily: 'Roboto',
-                      fontWeight: FontWeight.normal,
+                      fontFamily: 'Roboto-Bold',
+                      fontWeight: FontWeight.bold,                    
                     ),
                   ),
                   SizedBox(height: 40.0),
-                  Container(
-                    height: 200.0,
-                    child: ListView(
-                      scrollDirection: Axis.horizontal,
-                      children: <Widget>[
-                        TaskCard(task_author: 1, task_description: "Abc", task_deadline: DateTime.now(), task_title: "Abc",),
-                        TaskCard(task_author: 1, task_description: "Abc", task_deadline: DateTime.now(), task_title: "Abc",),
-                        TaskCard(task_author: 1, task_description: "Abc", task_deadline: DateTime.now(), task_title: "Abc",),
-                        TaskCard(task_author: 1, task_description: "Abc", task_deadline: DateTime.now(), task_title: "Abc",)
-
-                      ],
-                    )
+                  Text(
+                    "Для вас:",
+                    style: TextStyle(
+                      fontSize: 28.0,
+                      color: colors['blue'],
+                      fontFamily: 'Roboto-Bold',
+                      fontWeight: FontWeight.bold,                    
+                    ),
                   ),
+                  SizedBox(height: 20.0),
+                  TasksHorizontalListView(),
+                  SizedBox(height: 20.0),
+                  Text(
+                    "Созданные вами:",
+                    style: TextStyle(
+                      fontSize: 28.0,
+                      color: colors['blue'],
+                      fontFamily: 'Roboto-Bold',
+                      fontWeight: FontWeight.bold,                    
+                    ),
+                  ),
+                  SizedBox(height: 20.0),
+                  TasksHorizontalListView(),
+                  SizedBox(height: 40.0),
                 ],
               ),
             )
