@@ -3,6 +3,13 @@ import 'package:flutter/widgets.dart';
 import 'package:familyappmobile/components/createTask.dart';
 import 'package:familyappmobile/components/listviewElement.dart';
 import 'package:familyappmobile/components/tasksListView.dart';
+import 'package:familyappmobile/components/archiveListView.dart';
+
+//Изменено для build-а:
+/*
+1. имена Mark Kollin Loft John Lua
+в taskDetails, createTask
+*/
 
 void main() => runApp(App());
 
@@ -27,7 +34,7 @@ class HomeStatefulWidget extends StatefulWidget {
 
 class _HomeStatefulWidgetState extends State<HomeStatefulWidget> {
   //variables
-  String name = "Демьян";
+  String name = "друг";
 
   //default strings
   List<String> strings = [
@@ -119,7 +126,7 @@ class _HomeStatefulWidgetState extends State<HomeStatefulWidget> {
                     ),
                   ),
                   SizedBox(height: 20.0),
-                  TasksHorizontalListView(),
+                  TasksArchiveHorizontalListView(),
                   SizedBox(height: 40.0),
                 ],
               ),

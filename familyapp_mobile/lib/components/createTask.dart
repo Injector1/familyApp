@@ -1,8 +1,11 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'dart:async';
+import 'package:familyappmobile/components/listviewElement.dart';
+
 
 enum FamilyList {maksim, julia, demyan, platon, saveliy}
+
 
 class TaskCreateForm extends StatefulWidget {
   @override
@@ -141,7 +144,10 @@ class TaskCreateFormState extends State<TaskCreateForm> {
                       String _alert;
                       
                       if (_familyMember == null) _alert = "Выберите получателя задачи";
-                      else {_alert = "Задача успешно отправлена"; _color = Colors.green;}
+                      else {
+                        _alert = "Задача успешно отправлена"; 
+                        _color = Colors.green;
+                        }
                       }
                       Scaffold.of(context).showSnackBar(SnackBar(content: Text(_alert), backgroundColor: _color));
 
@@ -152,6 +158,7 @@ class TaskCreateFormState extends State<TaskCreateForm> {
                         case FamilyList.platon: return task_destination = 3;
                         case FamilyList.saveliy: return task_destination = 4;
                       }
+
 
                   },
                 )

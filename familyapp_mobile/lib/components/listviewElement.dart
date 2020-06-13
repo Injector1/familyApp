@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:familyappmobile/components/taskDetails.dart';
 
+
 class TaskCard extends StatelessWidget {
   final String task_title, task_description;
   final DateTime task_deadline;
@@ -10,13 +11,7 @@ class TaskCard extends StatelessWidget {
 
   @override 
   Widget build(BuildContext context) {
-    return InkWell(
-      onTap: (){
-        Navigator.of(context).push(
-          MaterialPageRoute(builder: (context) => TaskDetails())
-        );
-      },
-      child: Container(
+    return Container(
         width: 200.0,
         child: Container(
           child: ListTile(
@@ -39,18 +34,18 @@ class TaskCard extends StatelessWidget {
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: <Widget>[
                   Text(
-                    task_title,
+                    task_author.toString(),
                     style: TextStyle(
                       fontSize: 13,
                       color: Colors.white
                     ),
                   ),
                   Text(
-                    task_author.toString(),
+                    task_title,
                     style: TextStyle(
                       color: Colors.white,
-                      fontWeight: FontWeight.w500,
-                      fontSize: 17
+                      fontWeight: FontWeight.bold,
+                      fontSize: 20
                     ),
                   ),
                   Text(
@@ -65,7 +60,6 @@ class TaskCard extends StatelessWidget {
             ),
           ),
         ),
-      )
     );
   }
 }

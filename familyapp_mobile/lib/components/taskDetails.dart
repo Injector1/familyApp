@@ -1,26 +1,20 @@
 import 'package:flutter/material.dart';
+import 'package:familyappmobile/models/task.dart';
 
 
-class TaskDetails extends StatefulWidget {
-  @override
-  _TaskDetailsState createState() => _TaskDetailsState();
-}
-
-class _TaskDetailsState extends State<TaskDetails> {
-  int task_id, task_author = 1;
-  String task_title = "Помыть пол", 
-  task_description = "dsfjkllllllllllllllllllllllllksfjksdjfldsflsdjfsdlkfjdsflksdfjksdjflsdjfsjkfsdkflj";
-  DateTime task_deadline = DateTime.now();
-  List<String> family = [
+class TaskDetails extends StatelessWidget {
+  final Task task;
+  final List<String> family = [
     "Максим",
     "Юлия",
     "Демьян",
     "Платон",
     "Савелий"
   ];
-  String decline_reason;
+  var decline_reason;
 
-  void getTaskInfo(){}
+  TaskDetails(this.task);
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -30,7 +24,7 @@ class _TaskDetailsState extends State<TaskDetails> {
         children: <Widget>[
           SizedBox(height: 40.0,),
           Text(
-            "$task_title",
+            task.taskTitle,
             textAlign: TextAlign.center,
             style: TextStyle(
               color: Colors.white,
@@ -60,7 +54,7 @@ class _TaskDetailsState extends State<TaskDetails> {
                   ),
                   SizedBox(height: 20.0),
                   Text(
-                    "$task_description",
+                    task.taskDescription,
                     textAlign: TextAlign.left,
                     style: TextStyle(
                       fontSize: 20.0,
@@ -80,7 +74,7 @@ class _TaskDetailsState extends State<TaskDetails> {
                   ),
                   SizedBox(height: 20.0),
                   Text(
-                    "${family[task_author]}",
+                    family[task.taskAuthor],
                     style: TextStyle(
                       fontSize: 20.0,
                       color: Colors.blue[900],
@@ -99,14 +93,32 @@ class _TaskDetailsState extends State<TaskDetails> {
                   ),
                   SizedBox(height: 20.0),
                   Text(
-                    "${task_deadline.toString()}",
+                    task.taskDeadline.toString(),
                     style: TextStyle(
                       fontSize: 20.0,
                       color: Colors.blue[900],
                       fontFamily: 'Roboto',
                     ), 
                   ),
-                  Text(decline_reason??"abc"),
+                  SizedBox(height: 30.0),
+                  Text(
+                    "Статус задачи: ",
+                    style: TextStyle(
+                      fontSize: 20.0,
+                      color: Colors.blue[900],
+                      fontFamily: 'Roboto',
+                      fontWeight: FontWeight.bold,
+                    ), 
+                  ),
+                  SizedBox(height: 20.0),
+                  Text(
+                    task.taskStatus,
+                    style: TextStyle(
+                      fontSize: 20.0,
+                      color: Colors.blue[900],
+                      fontFamily: 'Roboto',
+                    ), 
+                  ),
                   SizedBox(height: 30.0),
                   ButtonBar(
                     children: <Widget>[
