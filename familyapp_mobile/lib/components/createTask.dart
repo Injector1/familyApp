@@ -1,3 +1,6 @@
+import 'dart:convert';
+import 'dart:math';
+import 'package:http/http.dart' as http;
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'dart:async';
@@ -28,39 +31,142 @@ class TaskCreateFormState extends State<TaskCreateForm> {
   String _alert;
 
   //variables
-  String task_title, task_description;
-  DateTime _task_deadline = new DateTime.now();
-  int task_author, task_destination;
+  String _taskTitle, _taskDescription;
+  DateTime _taskDeadline = new DateTime.now();
+  int _taskAuthor, _taskDestination;
   FamilyList _familyMember;
+  Map<FamilyList, int> identify = {
+    FamilyList.maksim: 0,
+    FamilyList.julia: 1,
+    FamilyList.demyan: 2,
+    FamilyList.platon: 3,
+    FamilyList.saveliy: 4
+  };
 
   //sending data to sever
-  void createTask(task_title, task_description, task_deadline, task_author, task_destination) async {
+  void createTask(taskTitle, taskDescription, taskDeadline, taskAuthor, taskDestination) async {
     final jsonRequest = {
-      'task_title': task_title,
-      'task_description': task_description,
-      'task_deadline': task_deadline,
-      'task_author': task_author,
-      'task_destination': task_destination
+      'task': {
+        'task_title': taskTitle,
+        'task_id': 5,
+        'task_description': taskDescription,
+        'task_deadline': taskDeadline.toString(),
+        'task_author': taskAuthor,
+        'task_destination': taskDestination,
+        'task_status': 'W'
+      }
     };
+    String body = jsonEncode(jsonRequest);
+    print(body);
+    http.Response response = await http.post(
+      "http://injectordk.pythonanywhere.com/api/tasks",
+      headers: {"Content-Type": "application/json"},
+      body: body,
+    );
+    print(response.statusCode);
+
   }
 
   //picking date
   Future<Null> _selectDate(BuildContext context) async {
     final DateTime picked = await showDatePicker(
       context: context, 
-      initialDate: _task_deadline, 
+      initialDate: _taskDeadline, 
       firstDate: new DateTime(2020), 
       lastDate: new DateTime(2030)
     );
 
-    if (picked != null && picked != _task_deadline) {
+    if (picked != null && picked != _taskDeadline) {
       setState(() {
-        _task_deadline = picked;
+        _taskDeadline = picked;
       });
     }
   }
 
+  Widget _buildTitle() {
+    return TextFormField(
+      decoration: InputDecoration(
+        border: OutlineInputBorder(),
+        labelText: strings[0],
+        icon: Icon(Icons.title)
+      ),
+      validator: (value) {
+        if (value.isEmpty) {
+          return "Введите название задачи";
+        }
+      },
+      onSaved: (value) {
+        _taskTitle = value;
+      },
+    );
+  }
 
+  Widget _buildDescription() {
+    return TextFormField(
+      minLines: 1, 
+      maxLines: 5,
+      decoration: InputDecoration(
+        border: OutlineInputBorder(),
+        labelText: strings[1],
+        icon: Icon(Icons.text_fields)
+      ),                  
+      validator: (value){
+        if (value.isEmpty) {
+          return "Введите описание задачи";
+        }
+      },
+      onSaved: (value) {
+        _taskDescription = value;
+      },
+    );
+  }
+
+  Widget _buildDeadline() {
+    return RaisedButton(
+      color: Colors.blue[600],
+      child: Text(strings[2], style: TextStyle(fontFamily: 'Roboto', color: Colors.white)),
+      onPressed: (){_selectDate(context);},
+    );
+  }
+
+  Widget _buildDestination() {
+    return Column(
+      children: <Widget>[
+        Text(strings[3], style: TextStyle(fontFamily: 'Roboto-Bold', color: Colors.blue[900], fontWeight: FontWeight.bold)),
+
+        RadioListTile(
+          title: Text("Максим", style: TextStyle(fontFamily: 'Roboto', color: Colors.blue[900])),
+          value: FamilyList.maksim,
+          groupValue: _familyMember,
+          onChanged: (FamilyList value){setState(() {_familyMember = value;});},
+        ),
+        RadioListTile(
+          title: Text("Юлия", style: TextStyle(fontFamily: 'Roboto', color: Colors.blue[900])),
+          value: FamilyList.julia,
+          groupValue: _familyMember,
+          onChanged: (FamilyList value){setState(() {_familyMember = value;});},
+        ),
+        RadioListTile(
+          title: Text("Демьян", style: TextStyle(fontFamily: 'Roboto', color: Colors.blue[900])),
+          value: FamilyList.demyan,
+          groupValue: _familyMember,
+          onChanged: (FamilyList value){setState(() {_familyMember = value;});},
+        ),
+        RadioListTile(
+          title: Text("Платон", style: TextStyle(fontFamily: 'Roboto', color: Colors.blue[900])),
+          value: FamilyList.platon,
+          groupValue: _familyMember,
+          onChanged: (FamilyList value){setState(() {_familyMember = value;});},
+        ),
+        RadioListTile(
+          title: Text("Савелий", style: TextStyle(fontFamily: 'Roboto', color: Colors.blue[900]),),
+          value: FamilyList.saveliy,
+          groupValue: _familyMember,
+          onChanged: (FamilyList value){setState(() {_familyMember = value;});},
+        ),
+      ],
+    );
+  }
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
@@ -73,93 +179,41 @@ class TaskCreateFormState extends State<TaskCreateForm> {
               children: <Widget>[
                 Text("Создать задачу", style: TextStyle(color: Colors.blue[900], fontSize: 36.0, fontWeight: FontWeight.bold, fontFamily: 'Roboto-Bold')),
                 SizedBox(height: 20.0),
-                TextFormField(
-                  decoration: InputDecoration(
-                    border: OutlineInputBorder(),
-                    labelText: strings[0],
-                    icon: Icon(Icons.title)
-                  ),
-                  validator: (value) {
-                    value.isEmpty ? "Введите название задачи" : task_title = value;
-                  },
-                ),
+                _buildTitle(),
                 SizedBox(height: 20.0),
-                TextFormField(
-                  minLines: 1, 
-                  maxLines: 5,
-                  decoration: InputDecoration(
-                    border: OutlineInputBorder(),
-                    labelText: strings[1],
-                    icon: Icon(Icons.text_fields)
-                  ),                  
-                  validator: (value){
-                    value.isEmpty ? "Введите описание задачи" : task_description = value;
-                  }
-                ),
+                _buildDescription(),
                 SizedBox(height: 40.0),
-                RaisedButton(
-                  color: Colors.blue[600],
-                  child: Text(strings[2], style: TextStyle(fontFamily: 'Roboto', color: Colors.white)),
-                  onPressed: (){_selectDate(context);},
-                ),
+                _buildDeadline(),
                 SizedBox(height: 20.0),
-                Text(strings[3], style: TextStyle(fontFamily: 'Roboto-Bold', color: Colors.blue[900], fontWeight: FontWeight.bold)),
-                RadioListTile(
-                  title: Text("Максим", style: TextStyle(fontFamily: 'Roboto', color: Colors.blue[900])),
-                  value: FamilyList.maksim,
-                  groupValue: _familyMember,
-                  onChanged: (FamilyList value){setState(() {_familyMember = value;});},
-                ),
-                RadioListTile(
-                  title: Text("Юлия", style: TextStyle(fontFamily: 'Roboto', color: Colors.blue[900])),
-                  value: FamilyList.julia,
-                  groupValue: _familyMember,
-                  onChanged: (FamilyList value){setState(() {_familyMember = value;});},
-                ),
-                RadioListTile(
-                  title: Text("Демьян", style: TextStyle(fontFamily: 'Roboto', color: Colors.blue[900])),
-                  value: FamilyList.demyan,
-                  groupValue: _familyMember,
-                  onChanged: (FamilyList value){setState(() {_familyMember = value;});},
-                ),
-                RadioListTile(
-                  title: Text("Платон", style: TextStyle(fontFamily: 'Roboto', color: Colors.blue[900])),
-                  value: FamilyList.platon,
-                  groupValue: _familyMember,
-                  onChanged: (FamilyList value){setState(() {_familyMember = value;});},
-                ),
-                RadioListTile(
-                  title: Text("Савелий", style: TextStyle(fontFamily: 'Roboto', color: Colors.blue[900]),),
-                  value: FamilyList.saveliy,
-                  groupValue: _familyMember,
-                  onChanged: (FamilyList value){setState(() {_familyMember = value;});},
-                ), 
+                _buildDestination(),
                 SizedBox(height: 20.0,),
                 RaisedButton(
                   color: Colors.blue[900],
                   child: Text("Отправить", style: TextStyle(color: Colors.white),),
-                  onPressed: () async {
-                    if (_formKey.currentState.validate()) {
-                      Color _color = Colors.red;
-                      String _alert;
-                      
-                      if (_familyMember == null) _alert = "Выберите получателя задачи";
-                      else {
+                  onPressed: () {
+                    if (_formKey.currentState.validate()) {                      
+                      if (_familyMember != null) {
                         _alert = "Задача успешно отправлена"; 
                         _color = Colors.green;
+                        _taskDestination = identify[_familyMember];
+                      } else {
+                        _alert = "Выберите получателя задачи";
                         }
                       }
-                      Scaffold.of(context).showSnackBar(SnackBar(content: Text(_alert), backgroundColor: _color));
+                      showDialog(context: context, builder: (BuildContext){
+                        return AlertDialog(
+                          backgroundColor: _color,
+                          shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(10.0)),
+                          title: Text(_alert ?? "Заполните все поля", style: TextStyle(color: Colors.white, fontWeight: FontWeight.bold),),
+                        );
+                      });
 
-                      switch(_familyMember) {
-                        case FamilyList.maksim: return task_destination = 0;
-                        case FamilyList.julia: return task_destination = 1;
-                        case FamilyList.demyan: return task_destination = 2;
-                        case FamilyList.platon: return task_destination = 3;
-                        case FamilyList.saveliy: return task_destination = 4;
-                      }
-
-
+                      _formKey.currentState.save();
+                      createTask(_taskTitle, _taskDescription, _taskDeadline, 2, _taskDestination);
+                      print(_taskTitle);
+                      print(_taskDescription);
+                      print(_taskDeadline);
+                      print(_taskDestination);
                   },
                 )
                                                                
