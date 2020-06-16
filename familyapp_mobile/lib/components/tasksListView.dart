@@ -21,7 +21,7 @@ class _TasksHorizontalListViewState extends State<TasksHorizontalListView> {
   ];
 
   Future<List<Task>> _getTasks(userId) async {
-    var data = await http.get("http://injectordk.pythonanywhere.com/api/tasks?id=$userId");
+    var data = await http.get("url");
     if (data.statusCode != 200) {
       print("Error");
     } else {
